@@ -44,6 +44,8 @@ end
 # User paths
 set -e fish_user_paths
 set -U fish_user_paths $HOME/.bin $HOME/.local/bin $HOME/Applications $fish_user_paths
+fish_add_path $HOME/.cargo/bin/
+fish_add_path /opt/android-sdk/platform-tools/
 
 # Starship prompt
 if command -sq starship
