@@ -78,10 +78,6 @@ super + h
 super + r
     rofi-theme-selector
 
-#Urxvt
-super + t
-    urxvt
-
 #Pavucontrol
 super + v
     pavucontrol
@@ -89,10 +85,6 @@ super + v
 #Pragha
 super + m
     pragha
-
-#urxvt
-super + Return
-    urxvt
 
 #Xkill
 super + Escape
@@ -201,14 +193,6 @@ ctrl + alt + r
 ctrl + alt + s
    spotify
 
-#urxvt
-ctrl + alt + Return
-    urxvt
-
-#urxvt
-ctrl + alt + t
-    urxvt
-
 #Vivaldi
 ctrl + alt + v
     vivaldi-stable
@@ -227,6 +211,38 @@ ctrl + alt + a
 #################################################################
 # ALT + ... KEYS
 #################################################################
+
+#Wallpaper trash
+alt + t
+    variety -t
+
+#Wallpaper next
+alt + n
+    variety -n
+
+#Wallpaper previous
+alt + p
+    variety -p
+
+#Wallpaper favorite
+alt + f
+    variety -f
+
+#Wallpaper previous
+alt + Left
+    variety -p
+
+#Wallpaper next
+alt + Right
+    variety -n
+
+#Wallpaper toggle-pause
+alt + Up
+    variety --toggle-pause
+
+#Wallpaper resume
+alt + Down
+    variety --resume
 
 #Xfce appfinder
 alt + F2
