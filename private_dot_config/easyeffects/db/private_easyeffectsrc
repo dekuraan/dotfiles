@@ -1,0 +1,21 @@
+[Presets]
+lastLoadedOutputPreset=Gracefu's Edits
+
+[StreamInputs]
+inputDevice=alsa_input.pci-0000_00_1f.3.analog-stereo
+
+[StreamOutputs]
+mostUsedPresets=Gracefu's Edits,fw13-easy-effects
+outputDevice=alsa_output.pci-0000_00_1f.3.analog-stereo
+plugins=filter#0,bass_enhancer#0,convolver#0,multiband_compressor#0,stereo_tools#0,limiter#0
+usedPresets=fw13-easy-effects:8,Gracefu's Edits:14
+visiblePage=pluginsPage
+visiblePlugin=filter#0
+
+[Window]
+autostartOnLogin=true
+outputAutoloadingFallbackPreset=fw13-easy-effects
+outputAutoloadingUsesFallback=true
+visiblePage=pwPage
+visiblePipeWirePage=testSignalsPage
+visiblePresetSheetPage=autoloadingPage

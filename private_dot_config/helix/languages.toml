@@ -1,0 +1,19 @@
+[[language]]
+name = "json"
+formatter = { command = 'biome', args = ["format", "--stdin-file-path", "buffer.json"] }
+auto-format = true
+
+[[language]]
+name = "jsonc"
+formatter = { command = 'biome', args = ["format", "--stdin-file-path", "buffer.jsonc"] }
+auto-format = true
+
+[[language]]
+auto-format = true
+name = "c-sharp"
+formatter = { command = "csharpier" }
+
+[language-server.omnisharp]
+command="omnisharp"
+args=["-lsp"]
+timeout=10000
