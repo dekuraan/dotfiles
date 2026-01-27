@@ -259,5 +259,8 @@
   "theme.bar.menus.enableShadow": false,
   "theme.bar.buttons.notifications.enableBorder": false,
   "bar.notifications.show_total": false,
-  "theme.bar.menus.menu.notifications.scaling": 90
+  "theme.bar.menus.menu.notifications.scaling": 90,
+  "theme.bar.buttons.systray.enableBorder": false,
+  "menus.clock.weather.location": "22043",
+  "bar.customModules.updates.leftClick": "$TERMINAL -e \"yay\""
 }

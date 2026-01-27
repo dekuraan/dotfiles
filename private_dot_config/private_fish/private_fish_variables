@@ -1,5 +1,7 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
+SETUVAR --export SSH_AGENT_PID:3459
+SETUVAR --export SSH_AUTH_SOCK:/home/gideon/\x2essh/agent/s\x2eZziaYTmsLp\x2eagent\x2eAZaAw70Tti
 SETUVAR __fish_initialized:4300
 SETUVAR fish_greeting:pokeget\x20random\x20\x2d\x2dhide\x2dname\x20\x7c\x20fastfetch\x20\x2d\x2dfile\x2draw\x20\x2d
-SETUVAR fish_user_paths:/home/gideon/\x2edotnet/tools
+SETUVAR fish_user_paths:/home/gideon/\x2erustup/toolchains/nightly\x2dx86_64\x2dunknown\x2dlinux\x2dgnu/bin\x1e/home/gideon/\x2elocal/bin\x1e/home/gideon/\x2ebun/bin\x1e/home/gideon/\x2edotnet/tools
