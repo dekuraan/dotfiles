@@ -132,6 +132,7 @@ device {
 windowrule = min_size 250 250, match:class ^(Unity)$ title:^(Project Settings)$
 windowrule = min_size 250 250, match:class ^(Unity)$ title:^(Preferences)$
 windowrule = min_size 250 250, match:class ^(Unity)$ title:^(Package Manager)$
+windowrule = center on, match:class ^(Unity)$, match:float yes
 
 $mainMod = SUPER
 bind = $mainMod, RETURN, exec, $terminal
@@ -155,8 +156,8 @@ bind = $mainMod, Tab, bringactivetotop,
 # Move focus with mainMod + arrow keys
 bind = $mainMod, left, movefocus, l
 bind = $mainMod, right, movefocus, r
-bind = $mainMod, up, movefocus, u
-bind = $mainMod, down, movefocus, d
+bind = $mainMod, up, workspace, e-1
+bind = $mainMod, down, workspace, e+1
 
 # Move focus with mainMod + vim keys
 bind = $mainMod, H, movefocus, l
@@ -173,6 +174,10 @@ bind = $mainMod CTRL, down, resizeactive, 0 20
 # Swap workspaces between monitors
 bind = $mainMod SHIFT, right, swapactiveworkspaces, current +1
 bind = $mainMod SHIFT, left, swapactiveworkspaces, current -1
+
+# Move window in layout stack
+bind = $mainMod SHIFT, up, swapnext, prev
+bind = $mainMod SHIFT, down, swapnext,
 
 # Volume and Media Control
 
