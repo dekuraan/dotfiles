@@ -1,0 +1,201 @@
+# Wayle configuration — Catppuccin Mocha theme
+
+[general]
+font-sans = "JetBrainsMono Nerd Font"
+font-mono = "JetBrains Mono"
+
+# ── Styling ──────────────────────────────────────────────
+[styling]
+rounding = "sm"
+theme-provider = "wayle"
+
+[styling.palette]
+bg = "#11111b"          # Crust
+surface = "#181825"     # Mantle
+elevated = "#1e1e2e"    # Base
+fg = "#cdd6f4"          # Text
+fg-muted = "#bac2de"    # Subtext0
+primary = "#b4befe"     # Lavender
+red = "#f38ba8"         # Red
+yellow = "#f9e2af"      # Yellow
+green = "#a6e3a1"       # Green
+blue = "#74c7ec"        # Sapphire
+
+# ── Bar ──────────────────────────────────────────────────
+[bar]
+location = "top"
+scale = 0.9
+padding = 0.35
+padding-ends = 0.5
+module-gap = 0.5
+
+bg = "bg-surface"
+background-opacity = 100
+border-location = "none"
+shadow = "none"
+rounding = "none"
+
+button-variant = "block-prefix"
+button-rounding = "sm"
+button-bg-opacity = 100
+button-label-weight = "semibold"
+button-border-location = "all"
+button-border-width = 1
+
+button-group-rounding = "sm"
+button-group-background = "bg-elevated"
+button-group-border-location = "none"
+
+dropdown-shadow = true
+dropdown-opacity = 100
+
+# ── Layout ─────────────────────────────────────────────
+[[bar.layout]]
+monitor = "*"
+left = [
+  "dashboard",
+  "hyprland-workspaces",
+  "clock",
+  "media",
+]
+center = [
+  "systray",
+]
+right = [
+  "weather",
+  "volume",
+  "network",
+  "bluetooth",
+{{- if eq .chezmoi.hostname "framework-13" }}
+  "battery",
+{{- end }}
+  "ram",
+  "cpu",
+  "notifications",
+]
+
+# ── Modules ──────────────────────────────────────────────
+
+[modules.dashboard]
+icon-color = "auto"
+icon-bg-color = "accent"
+label-show = false
+border-show = false
+left-click = "dropdown:dashboard"
+
+[modules.hyprland-workspaces]
+min-workspace-count = 10
+monitor-specific = false
+icon-color = "auto"
+icon-bg-color = "accent"
+label-show = false
+border-show = false
+
+[modules.clock]
+format = "%a %b %d %I:%M"
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "accent"
+label-show = true
+label-color = "accent"
+button-bg-color = "bg-surface-elevated"
+border-show = false
+left-click = "dropdown:calendar"
+right-click = "dropdown:weather"
+
+[modules.media]
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "accent"
+label-show = true
+label-color = "accent"
+button-bg-color = "bg-surface-elevated"
+border-show = false
+left-click = "dropdown:media"
+
+[modules.volume]
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "blue"
+label-show = true
+label-color = "blue"
+button-bg-color = "bg-surface-elevated"
+border-show = false
+left-click = "dropdown:audio"
+middle-click = "wayle audio output-mute"
+
+[modules.network]
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "green"
+label-show = true
+label-color = "green"
+label-max-length = 4
+button-bg-color = "bg-surface-elevated"
+border-show = false
+left-click = "dropdown:network"
+
+[modules.bluetooth]
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "accent"
+label-show = true
+label-max-length = 4
+button-bg-color = "bg-surface-elevated"
+border-show = false
+left-click = "dropdown:bluetooth"
+
+{{- if eq .chezmoi.hostname "framework-13" }}
+
+[modules.battery]
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "yellow"
+label-show = true
+label-color = "yellow"
+button-bg-color = "bg-surface-elevated"
+border-show = false
+left-click = "dropdown:battery"
+{{- end }}
+
+[modules.ram]
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "green"
+label-show = true
+label-color = "green"
+button-bg-color = "bg-surface-elevated"
+border-show = false
+
+[modules.cpu]
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "red"
+label-show = true
+label-color = "red"
+button-bg-color = "bg-surface-elevated"
+border-show = false
+
+[modules.notifications]
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "accent"
+label-show = false
+button-bg-color = "bg-surface-elevated"
+border-show = false
+left-click = "dropdown:notification"
+
+[modules.weather]
+provider = "open-meteo"
+location = "35.4021,0.1400"
+units = "metric"
+format = "{{ "{{" }} temp {{ "}}" }}{{ "{{" }} temp_unit {{ "}}" }}"
+refresh-interval-seconds = 1800
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "blue"
+label-show = true
+label-color = "blue"
+button-bg-color = "bg-surface-elevated"
+border-show = false
+left-click = "dropdown:weather"
