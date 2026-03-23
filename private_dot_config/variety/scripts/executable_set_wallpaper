@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# Custom set_wallpaper script for Variety + Hyprpaper on Hyprland.
+# Uses hyprpaper IPC to change wallpapers at runtime.
+#
+# $1: Absolute path to the wallpaper image (after effects applied)
+# $2: "auto", "manual", or "refresh"
+# $3: Absolute path to the original wallpaper image
+# $4: Display mode
+
+WP=$1
+
+# Preload the new wallpaper
+hyprctl hyprpaper preload "$WP"
+
+# Set it on all monitors
+hyprctl hyprpaper wallpaper ",$WP"
+
+# Unload all unused wallpapers to free memory
+hyprctl hyprpaper unload all
+
+exit 0
