@@ -17,8 +17,10 @@ fg = "#cdd6f4"          # Text
 fg-muted = "#bac2de"    # Subtext0
 primary = "#b4befe"     # Lavender
 red = "#f38ba8"         # Red
+peach = "#fab387"       # Peach
 yellow = "#f9e2af"      # Yellow
 green = "#a6e3a1"       # Green
+teal = "#94e2d5"        # Teal
 blue = "#74c7ec"        # Sapphire
 
 # ── Bar ──────────────────────────────────────────────────
@@ -122,12 +124,27 @@ button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:media"
 
+[modules.weather]
+provider = "open-meteo"
+location = "35.4021,0.1400"
+units = "metric"
+format = "{{ "{{" }} temp {{ "}}" }}{{ "{{" }} temp_unit {{ "}}" }}"
+refresh-interval-seconds = 1800
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "red"
+label-show = true
+label-color = "red"
+button-bg-color = "bg-surface-elevated"
+border-show = false
+left-click = "dropdown:weather"
+
 [modules.volume]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "blue"
+icon-bg-color = "peach"
 label-show = true
-label-color = "blue"
+label-color = "peach"
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:audio"
@@ -136,10 +153,12 @@ middle-click = "wayle audio output-mute"
 [modules.network]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "green"
+icon-bg-color = "yellow"
 label-show = true
-label-color = "green"
+label-color = "yellow"
+{{- if ne .chezmoi.hostname "domer" }}
 label-max-length = 4
+{{- end }}
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:network"
@@ -147,9 +166,12 @@ left-click = "dropdown:network"
 [modules.bluetooth]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "accent"
+icon-bg-color = "green"
 label-show = true
+label-color = "green"
+{{- if ne .chezmoi.hostname "domer" }}
 label-max-length = 4
+{{- end }}
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:bluetooth"
@@ -159,9 +181,9 @@ left-click = "dropdown:bluetooth"
 [modules.battery]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "yellow"
+icon-bg-color = "teal"
 label-show = true
-label-color = "yellow"
+label-color = "teal"
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:battery"
@@ -170,41 +192,26 @@ left-click = "dropdown:battery"
 [modules.ram]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "green"
+icon-bg-color = "{{ if eq .chezmoi.hostname "framework-13" }}blue{{ else }}teal{{ end }}"
 label-show = true
-label-color = "green"
+label-color = "{{ if eq .chezmoi.hostname "framework-13" }}blue{{ else }}teal{{ end }}"
 button-bg-color = "bg-surface-elevated"
 border-show = false
 
 [modules.cpu]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "red"
+icon-bg-color = "{{ if eq .chezmoi.hostname "framework-13" }}primary{{ else }}blue{{ end }}"
 label-show = true
-label-color = "red"
+label-color = "{{ if eq .chezmoi.hostname "framework-13" }}primary{{ else }}blue{{ end }}"
 button-bg-color = "bg-surface-elevated"
 border-show = false
 
 [modules.notifications]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "accent"
+icon-bg-color = "primary"
 label-show = false
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:notification"
-
-[modules.weather]
-provider = "open-meteo"
-location = "35.4021,0.1400"
-units = "metric"
-format = "{{ "{{" }} temp {{ "}}" }}{{ "{{" }} temp_unit {{ "}}" }}"
-refresh-interval-seconds = 1800
-icon-show = true
-icon-color = "auto"
-icon-bg-color = "blue"
-label-show = true
-label-color = "blue"
-button-bg-color = "bg-surface-elevated"
-border-show = false
-left-click = "dropdown:weather"
