@@ -1,0 +1,3 @@
+{{- if ne .chezmoi.hostname "framework-13" }}
+.config/libinput-gestures.conf
+{{- end }}
