@@ -1,0 +1,48 @@
+machines:
+  framework-13:
+    role: laptop
+    has_starship: true
+    has_keychain: true
+    keychain_args: "-q --eval id_ed25519 github"
+    has_greeting: true
+    extra_paths:
+      - "~/.cargo/bin"
+    extra_env:
+      SUDO_ASKPASS: "~/.local/bin/sudo-askpass"
+    aliases:
+      google-chrome: google-chrome-stable
+      yay: paru
+  domer:
+    role: workstation
+    has_starship: true
+    has_keychain: true
+    keychain_args: "--eval -Q --quiet github"
+    has_greeting: true
+    extra_paths: []
+    extra_env: {}
+    aliases:
+      google-chrome: google-chrome-stable
+  alienware:
+    role: htpc
+    has_starship: false
+    has_keychain: false
+    keychain_args: ""
+    has_greeting: false
+    extra_paths: []
+    extra_env:
+      EDITOR: helix
+    aliases:
+      hx: helix
+  palamedes:
+    role: server
+    has_starship: false
+    has_keychain: false
+    keychain_args: ""
+    has_greeting: false
+    use_custom_config: true
+    extra_paths: []
+    extra_env:
+      EDITOR: helix
+      VISUAL: helix
+    aliases:
+      hx: helix

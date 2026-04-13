@@ -1,0 +1,33 @@
+
+{{- $m := index .machines .chezmoi.hostname -}}
+{{- range $m.extra_paths }}
+fish_add_path {{ . }}
+{{- end -}}
+{{- range $k, $v := $m.extra_env }}
+set -gx {{ $k }} {{ $v }}
+{{- end }}
+
+if status is-interactive
+{{- if $m.has_keychain }}
+    keychain {{ $m.keychain_args }} | source
+{{- end }}
+end
+
+function fish_greeting
+{{- if $m.has_greeting }}
+    pokeget random --hide-name | fastfetch --logo-position right --file-raw -
+{{- end }}
+end
+
+function tere
+    set --local result (command tere $argv)
+    [ -n "$result" ] && cd -- "$result"
+end
+{{- range $name, $target := $m.aliases }}
+alias {{ $name }}={{ $target }}
+{{- end }}
+
+zoxide init fish | source
+{{- if $m.has_starship }}
+starship init fish | source
+{{- end }}
