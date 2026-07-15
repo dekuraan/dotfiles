@@ -8,6 +8,18 @@ docs
 # Regenerated every boot (SSH_AGENT_PID, SSH_AUTH_SOCK); never syncable.
 .config/fish/fish_variables
 
+# App-managed state, not configuration. Each rewrites itself on use or on
+# upgrade, so tracking them is permanent drift for no benefit.
+# Comments must be on their own line here — gitignore syntax treats a trailing
+# '#' as part of the pattern, not as a comment.
+#
+# btop.conf: version header churns on every btop upgrade
+# QtProject.conf: file-dialog history + treeViewHeader blob
+# pavucontrol.ini: window geometry and last-used tab
+.config/btop/btop.conf
+.config/QtProject.conf
+.config/pavucontrol.ini
+
 # Palamedes has a heavily customized fish config with Tide, sourced helpers,
 # and server-specific aliases — skip overwriting it
 {{ if eq .chezmoi.hostname "palamedes" }}
