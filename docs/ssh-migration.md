@@ -28,6 +28,8 @@ commented with an account name or nothing, which makes them unattributable and
 therefore un-revokable without guesswork. Don't add to that.
 
 Roles: **domer** client + server. **framework-13** client. **palamedes** server.
+**alienware** server — LAN only, not on the tailnet, and easy to miss for exactly
+that reason; `tailscale status` does not list it.
 Tailscale SSH was evaluated and rejected — trust stays in keys + keychain.
 
 ## Done on domer
@@ -66,12 +68,35 @@ The tracked config sets `IdentityFile ~/.ssh/git` + `IdentitiesOnly yes` for
 github.com, so applying it before `~/.ssh/git` exists offers GitHub no key at
 all and breaks it until the key shows up.
 
+## Done on alienware
+
+alienware authorized framework-13's `id_ed25519` and was the machine's *only*
+key in — retiring that key without acting here first would have locked
+framework-13 out, silently. It was absent from this doc's roles list and from
+`tailscale status`, so nothing pointed at it. `tunnel@framework-13` was added
+and verified, then `id_ed25519` removed and confirmed denied. alienware has a
+block in `config.local` with no `HostName` (it resolves on the LAN).
+
+**Before retiring any key, enumerate who actually trusts it — don't infer it
+from this file.** `ssh-keygen -l -f ~/.ssh/known_hosts` lists every host this
+machine has ever connected to, which is the honest starting point; the roles
+list above is a summary and was wrong. Test each candidate with
+`-F /dev/null -o IdentitiesOnly=yes -i <key>` before deleting anything.
+
+alienware also authorizes domer's **`git`** key (its comment reads `github`) for
+host access. That is a GitHub key doing tunnel's job, contradicting the
+one-job-each rule. Left alone here — it is domer's credential to rotate.
+
 ## Remaining: retire the old keys
 
-`id_ed25519` and `github` are framework-13's pre-migration keys and are still
-live. They should be removed from GitHub and from every `authorized_keys` —
-read the live files to see what's there — not left as dormant third
-credentials. Verify the replacement works before removing, never after.
+`id_ed25519` is now revoked on domer and alienware, and was never on palamedes
+or GitHub. `github` is still registered on GitHub (key id titled `Framework`)
+and is still authorized on nothing else known. Neither has been deleted from
+`~/.ssh` on framework-13 yet.
+
+Unverified: the router at `192.168.1.1` and a `framework-12` entry both appear
+in framework-13's `known_hosts`. Whether either still trusts `id_ed25519` was
+not established, so deleting the private key could strand access to them.
 
 ## Editing authorized_keys — read this first
 
