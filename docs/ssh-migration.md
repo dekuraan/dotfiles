@@ -1,6 +1,6 @@
 # SSH keys — scheme, migration, and rules
 
-Status 2026-07-15: **domer done. framework-13 done — old keys not yet retired.**
+Status 2026-07-15: **domer, framework-13, alienware done. Migration complete.**
 
 > This file is in a **public** repo. Keep host inventory, addresses, and key
 > fingerprints out of it. Read live state off the machines instead — it is
@@ -87,16 +87,25 @@ alienware also authorizes domer's **`git`** key (its comment reads `github`) for
 host access. That is a GitHub key doing tunnel's job, contradicting the
 one-job-each rule. Left alone here — it is domer's credential to rotate.
 
-## Remaining: retire the old keys
+## Old keys retired
 
-`id_ed25519` is now revoked on domer and alienware, and was never on palamedes
-or GitHub. `github` is still registered on GitHub (key id titled `Framework`)
-and is still authorized on nothing else known. Neither has been deleted from
-`~/.ssh` on framework-13 yet.
+framework-13's `id_ed25519` and `github` are gone: revoked on domer and
+alienware, confirmed denied there, removed from the agent, and deleted from
+`~/.ssh`. All four hosts re-verified afterwards with only `git` and `tunnel`
+loaded. `id_ed25519` was never on palamedes or GitHub; neither key opened
+gitlab.com.
 
-Unverified: the router at `192.168.1.1` and a `framework-12` entry both appear
-in framework-13's `known_hosts`. Whether either still trusts `id_ed25519` was
-not established, so deleting the private key could strand access to them.
+The stale GitHub entry titled `Framework` may still be listed — it was this
+machine's `github` key. Deleting the private key made it permanently unusable
+(the material was unique to framework-13; domer's GitHub key is different), so
+it is clutter rather than a live credential. Remove it with
+`gh ssh-key delete <id> --yes`.
+
+The router at `192.168.1.1` and a `framework-12` entry appear in
+framework-13's `known_hosts` and were never tested against `id_ed25519`, which
+is now deleted. Deliberate — judged not worth keeping the key alive for. If the
+router turns out to have trusted it, recover via its web UI or console and
+authorize `tunnel@framework-13`.
 
 ## Editing authorized_keys — read this first
 
