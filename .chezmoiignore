@@ -1,3 +1,6 @@
 {{- if ne .chezmoi.hostname "framework-13" }}
 .config/libinput-gestures.conf
 {{- end }}
+
+# Repo docs — travel with the source, never applied to $HOME.
+docs

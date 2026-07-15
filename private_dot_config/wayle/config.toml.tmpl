@@ -71,6 +71,9 @@ right = [
 {{- if eq .chezmoi.hostname "framework-13" }}
   "battery",
 {{- end }}
+{{- if eq .chezmoi.hostname "domer" }}
+  "custom-mouse-battery",
+{{- end }}
   "ram",
   "cpu",
   "notifications",
@@ -215,3 +218,26 @@ label-show = false
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:notification"
+{{- if eq .chezmoi.hostname "domer" }}
+
+# ── G-Wolves Lycan 8K mouse battery ──────────────────────
+# Reads battery over hidraw via ~/.local/bin/gwolves-battery.
+# Emits JSON {percentage,text,alt,tooltip}; hides when the mouse is asleep.
+[[modules.custom]]
+id = "mouse-battery"
+command = "/home/gideon/.local/bin/gwolves-battery"
+interval-ms = 30000
+hide-if-empty = true
+icon-name = "tb-mouse-symbolic"
+icon-map = { charging = "tb-battery-charging-symbolic", critical = "tb-mouse-symbolic" }
+format = "{{ "{{" }} percentage {{ "}}" }}%"
+tooltip-format = "{{ "{{" }} tooltip {{ "}}" }}"
+class-format = "mouse-battery {{ "{{" }} alt {{ "}}" }}"
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "green"
+label-show = true
+label-color = "green"
+button-bg-color = "bg-surface-elevated"
+border-show = false
+{{- end }}

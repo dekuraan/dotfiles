@@ -1,0 +1,21 @@
+# Tracked by chezmoi and published to a PUBLIC repo — keep host inventory out.
+# Machine-specific hosts (tailnet addresses) live in ~/.ssh/config.local, which
+# is deliberately untracked. Include must come first: ssh takes the FIRST value
+# it sees for any keyword, so an Include at the bottom could never override.
+Include ~/.ssh/config.local
+
+# Keys are purpose-named and identical across machines; the key *material*
+# differs per machine, so any one client can be revoked without touching the
+# others. Private keys are generated per-machine and never leave it — they are
+# not in this repo, encrypted or otherwise.
+#
+#   ~/.ssh/git     -> GitHub
+#   ~/.ssh/tunnel  -> tailnet hosts
+#
+# IdentitiesOnly stops ssh from offering every agent key to every host, which
+# is what trips "Too many authentication failures" once several are loaded.
+
+Host github.com
+    User git
+    IdentityFile ~/.ssh/git
+    IdentitiesOnly yes
