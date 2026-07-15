@@ -1,0 +1,53 @@
+machines:
+  framework-13:
+    role: laptop
+    has_starship: true
+    has_keychain: true
+    # Still the pre-migration keys. Becomes "--eval -Q --quiet git tunnel" only
+    # once ~/.ssh/git and ~/.ssh/tunnel exist on this machine — changing it
+    # first would break login here. See docs/ssh-migration.md.
+    keychain_args: "-q --eval id_ed25519 github"
+    has_greeting: true
+    extra_paths:
+      - "~/.cargo/bin"
+    extra_env:
+      SUDO_ASKPASS: "~/.local/bin/sudo-askpass"
+    aliases:
+      google-chrome: google-chrome-stable
+      yay: paru
+  domer:
+    role: workstation
+    has_starship: true
+    has_keychain: true
+    # Purpose-named keys: git -> GitHub, tunnel -> tailnet. --agents is
+    # deprecated in the installed keychain and warns if passed.
+    keychain_args: "--eval -Q --quiet git tunnel"
+    has_greeting: true
+    extra_paths: []
+    extra_env: {}
+    aliases:
+      google-chrome: google-chrome-stable
+  alienware:
+    role: htpc
+    has_starship: false
+    has_keychain: false
+    keychain_args: ""
+    has_greeting: false
+    extra_paths: []
+    extra_env:
+      EDITOR: helix
+    aliases:
+      hx: helix
+  palamedes:
+    role: server
+    has_starship: false
+    has_keychain: false
+    keychain_args: ""
+    has_greeting: false
+    use_custom_config: true
+    extra_paths: []
+    extra_env:
+      EDITOR: helix
+      VISUAL: helix
+    aliases:
+      hx: helix

@@ -4,3 +4,16 @@
 
 # Repo docs — travel with the source, never applied to $HOME.
 docs
+
+# Regenerated every boot (SSH_AGENT_PID, SSH_AUTH_SOCK); never syncable.
+.config/fish/fish_variables
+
+# Palamedes has a heavily customized fish config with Tide, sourced helpers,
+# and server-specific aliases — skip overwriting it
+{{ if eq .chezmoi.hostname "palamedes" }}
+.config/fish/config.fish
+.config/fish/conf.d/
+.config/fish/functions/
+.config/fish/completions/
+.config/fish/themes/
+{{ end }}

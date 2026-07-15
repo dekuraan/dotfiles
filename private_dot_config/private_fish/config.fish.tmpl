@@ -1,0 +1,45 @@
+
+{{- $m := index .machines .chezmoi.hostname -}}
+{{- range $m.extra_paths }}
+fish_add_path {{ . }}
+{{- end -}}
+{{- range $k, $v := $m.extra_env }}
+set -gx {{ $k }} {{ $v }}
+{{- end }}
+
+if status is-interactive
+{{- if $m.has_keychain }}
+    keychain {{ $m.keychain_args }} | source
+{{- end }}
+
+    # reef: keep exported vars alive between bash-passthrough commands, so a
+    # pasted `export FOO=bar` survives to the next one. Must call the function,
+    # not just set reef_persist_mode — it also sets __reef_state_file, without
+    # which state mode silently degrades back to off.
+    #
+    # Runtime-guarded rather than a machines[].has_reef flag: reef can be
+    # installed or removed without a .chezmoidata.yaml edit, and a guard cannot
+    # fall out of sync with reality the way a flag can.
+    if type -q reef
+        reef persist state >/dev/null
+    end
+end
+
+function fish_greeting
+{{- if $m.has_greeting }}
+    pokeget random --hide-name | fastfetch --logo-position right --file-raw -
+{{- end }}
+end
+
+function tere
+    set --local result (command tere $argv)
+    [ -n "$result" ] && cd -- "$result"
+end
+{{- range $name, $target := $m.aliases }}
+alias {{ $name }}={{ $target }}
+{{- end }}
+
+zoxide init fish | source
+{{- if $m.has_starship }}
+starship init fish | source
+{{- end }}

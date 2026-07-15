@@ -38,7 +38,9 @@ Tailscale SSH was evaluated and rejected — trust stays in keys + keychain.
 - `~/.ssh` was mode 755 → now 700. **Check this on framework-13 too.**
 - `~/.ssh/config` tracked (sanitized); `~/.ssh/config.local` holds the host
   inventory and is untracked.
-- `config.fish`: `keychain --eval -Q --quiet git tunnel | source`.
+- `.chezmoidata.yaml` → `machines.domer.keychain_args` is now
+  `--eval -Q --quiet git tunnel`. `config.fish` is generated from
+  `config.fish.tmpl`; do not hand-edit it, the next apply reverts you.
 - palamedes' `authorized_keys` reduced to `tunnel@domer` only. **framework-13
   therefore has no access to palamedes right now** — restoring it is the job
   below, via a new key, not by re-adding the old one.
@@ -67,8 +69,22 @@ ssh domer 'echo ok'
 ssh -T github.com          # expect: Hi dekuraan!
 ```
 
+**Only after all three pass**, flip framework-13 over in `.chezmoidata.yaml`:
+
+```yaml
+  framework-13:
+    keychain_args: "--eval -Q --quiet git tunnel"   # was: -q --eval id_ed25519 github
+```
+
+then `chezmoi apply`. Doing this before the keys exist gives you a keychain
+warning every shell; doing it before they're *authorized* means the old keys
+stop being loaded while the new ones don't work yet.
+
 Once `tunnel@framework-13` is confirmed on both servers, its old keys can be
 retired from their `authorized_keys` — read the live files to see what's there.
+Note `id_ed25519` is framework-13's pre-migration key: once `git` and `tunnel`
+replace it, it should be removed from GitHub and from every `authorized_keys`,
+not left as a dormant third credential.
 
 ## Editing authorized_keys — read this first
 
