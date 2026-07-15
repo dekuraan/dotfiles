@@ -83,9 +83,17 @@ machine has ever connected to, which is the honest starting point; the roles
 list above is a summary and was wrong. Test each candidate with
 `-F /dev/null -o IdentitiesOnly=yes -i <key>` before deleting anything.
 
-alienware also authorizes domer's **`git`** key (its comment reads `github`) for
-host access. That is a GitHub key doing tunnel's job, contradicting the
-one-job-each rule. Left alone here — it is domer's credential to rotate.
+alienware previously authorized domer's **`git`** key (comment `github`) for host
+access — a GitHub key doing tunnel's job. Fixed: `tunnel@domer` authorized and
+verified, the `git` key removed and confirmed denied, and an `alienware` block
+added to domer's `config.local`. alienware's `authorized_keys` is now tunnel keys
+only, one per client.
+
+The block mattered as much as the key. Without it domer had no `alienware` entry,
+so `IdentitiesOnly` defaulted off and ssh walked the agent until something was
+accepted — landing on `git` purely because it was offered first. Authorizing
+`tunnel@domer` alone would not have changed which key got used; the config is what
+makes the choice deliberate rather than incidental.
 
 ## Old keys retired
 
