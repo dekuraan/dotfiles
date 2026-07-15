@@ -95,11 +95,10 @@ alienware, confirmed denied there, removed from the agent, and deleted from
 loaded. `id_ed25519` was never on palamedes or GitHub; neither key opened
 gitlab.com.
 
-The stale GitHub entry titled `Framework` may still be listed — it was this
-machine's `github` key. Deleting the private key made it permanently unusable
-(the material was unique to framework-13; domer's GitHub key is different), so
-it is clutter rather than a live credential. Remove it with
-`gh ssh-key delete <id> --yes`.
+The GitHub entry titled `Framework` — this machine's old `github` key — has been
+deleted. GitHub now lists only `framework-13`, `domer`, and `OnePlus 11`, each
+attributable to one client. Verified afterwards that GitHub auth and push still
+work over `~/.ssh/git`.
 
 The router at `192.168.1.1` and a `framework-12` entry appear in
 framework-13's `known_hosts` and were never tested against `id_ed25519`, which
