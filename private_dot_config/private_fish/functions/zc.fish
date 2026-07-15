@@ -75,10 +75,13 @@ function zc --description 'Launch `claude --worktree <name>` in a minimal zellij
         "            args \"-c\" \"$wait_cmd exec fish\"" \
         '        }' \
         '    }' \
-        '}' >$layout
+        '}' \
+        'pane_frames false' >$layout
 
     # ---- launch (minimal UI: compact bar, no pane frames) -----------------------
-    zellij -s $session -l $layout options --pane-frames false
+    # -n (not -l): with --session, -l means "add tabs to an existing session" and
+    # fails when it doesn't exist. -n always starts a new one.
+    zellij -s $session -n $layout
     set -l st $status
     rm -f $layout
     return $st
