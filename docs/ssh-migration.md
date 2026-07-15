@@ -1,6 +1,6 @@
 # SSH keys — scheme, migration, and rules
 
-Status 2026-07-15: **domer done. framework-13 not started.**
+Status 2026-07-15: **domer done. framework-13 done — old keys not yet retired.**
 
 > This file is in a **public** repo. Keep host inventory, addresses, and key
 > fingerprints out of it. Read live state off the machines instead — it is
@@ -45,46 +45,33 @@ Tailscale SSH was evaluated and rejected — trust stays in keys + keychain.
   therefore has no access to palamedes right now** — restoring it is the job
   below, via a new key, not by re-adding the old one.
 
-## framework-13 — the remaining work
+## Done on framework-13
 
-Run on framework-13:
+`git` and `tunnel` generated with passphrases, authorized, and verified against
+GitHub, domer, and palamedes — each confirmed to authenticate with the *new*
+key, not an old one still sitting in the agent. `~/.ssh` was already 700.
+`config.local` copied from domer verbatim. `keychain_args` flipped and applied.
+Access to palamedes is restored via `tunnel@framework-13`.
 
-```fish
-chezmoi update
-stat -c %a ~/.ssh            # want 700; chmod 700 ~/.ssh if not
+palamedes' host key was not in framework-13's `known_hosts` (it never had a
+successful connection to learn it), so `ssh palamedes` failed with **Host key
+verification failed** — an unknown-host error, not an auth error. Don't reach
+for `StrictHostKeyChecking=no`. The host key was read over the already-trusted
+domer channel and compared against a direct `ssh-keyscan`; identical, so it was
+pinned. Verify out-of-band like this whenever a first connection is also the
+one that would teach you the key.
 
-ssh-keygen -t ed25519 -f ~/.ssh/git    -C "git@framework-13"
-ssh-keygen -t ed25519 -f ~/.ssh/tunnel -C "tunnel@framework-13"
-```
+**Ordering:** generate and authorize keys *first*, apply `~/.ssh/config` last.
+The tracked config sets `IdentityFile ~/.ssh/git` + `IdentitiesOnly yes` for
+github.com, so applying it before `~/.ssh/git` exists offers GitHub no key at
+all and breaks it until the key shows up.
 
-Real passphrases on both — keychain exists to cache them.
+## Remaining: retire the old keys
 
-Write `~/.ssh/config.local` by hand (copy from domer; it is untracked by
-design). Then authorize `~/.ssh/tunnel.pub` on each server, add `~/.ssh/git.pub`
-to GitHub titled `framework-13`, and verify:
-
-```fish
-ssh palamedes 'echo ok'
-ssh domer 'echo ok'
-ssh -T github.com          # expect: Hi dekuraan!
-```
-
-**Only after all three pass**, flip framework-13 over in `.chezmoidata.yaml`:
-
-```yaml
-  framework-13:
-    keychain_args: "--eval -Q --quiet git tunnel"   # was: -q --eval id_ed25519 github
-```
-
-then `chezmoi apply`. Doing this before the keys exist gives you a keychain
-warning every shell; doing it before they're *authorized* means the old keys
-stop being loaded while the new ones don't work yet.
-
-Once `tunnel@framework-13` is confirmed on both servers, its old keys can be
-retired from their `authorized_keys` — read the live files to see what's there.
-Note `id_ed25519` is framework-13's pre-migration key: once `git` and `tunnel`
-replace it, it should be removed from GitHub and from every `authorized_keys`,
-not left as a dormant third credential.
+`id_ed25519` and `github` are framework-13's pre-migration keys and are still
+live. They should be removed from GitHub and from every `authorized_keys` —
+read the live files to see what's there — not left as dormant third
+credentials. Verify the replacement works before removing, never after.
 
 ## Editing authorized_keys — read this first
 
@@ -143,6 +130,22 @@ ssh-keygen -l -f ~/.ssh/authorized_keys   # confirm exactly what you meant
   `HostName` lines can go entirely.
 - **`keychain --agents` is deprecated** in the installed version and warns if
   used. Correct: `keychain --eval -Q --quiet git tunnel`.
+- **`-Q` skips loading entirely if the agent already has *any* key.** It reports
+  `Found existing populated ssh-agent (quick)` and adds nothing — so mid-
+  migration, an agent holding only the *old* keys silently prevents the new ones
+  from loading, with no prompt and no error. This is correct at boot (empty
+  agent) but confusing while switching. To force it: `ssh-add ~/.ssh/git
+  ~/.ssh/tunnel` directly, or clear the agent first with `ssh-add -D`.
+- **One passphrase prompt covers both keys** when they share a passphrase.
+  keychain passes `git` and `tunnel` to a single `ssh-add`, and `ssh-add` retries
+  an already-entered passphrase against later keys, re-prompting only if it
+  fails. Identical passphrases therefore cost one prompt per *boot*, not per key
+  and not per shell — the agent persists. Sharing a passphrase makes the two keys
+  one secret; the split buys revocation granularity, not blast-radius isolation.
+- **`!` in Claude Code runs bash, not fish** — `keychain ... | source` is fish
+  syntax and fails there with a `source: filename argument required` error from
+  bash. It also has no TTY, so a passphrase prompt cannot appear at all; use a
+  real terminal or an `SSH_ASKPASS` helper (fuzzel works, as with sudo-askpass).
 - **A missing key is only a warning** from keychain (exit 0), and `--quiet`
   does not suppress it.
 - **palamedes' login shell is fish**, so remote one-liners are fish syntax

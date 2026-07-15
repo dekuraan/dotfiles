@@ -3,10 +3,9 @@ machines:
     role: laptop
     has_starship: true
     has_keychain: true
-    # Still the pre-migration keys. Becomes "--eval -Q --quiet git tunnel" only
-    # once ~/.ssh/git and ~/.ssh/tunnel exist on this machine — changing it
-    # first would break login here. See docs/ssh-migration.md.
-    keychain_args: "-q --eval id_ed25519 github"
+    # Purpose-named keys: git -> GitHub, tunnel -> tailnet. --agents is
+    # deprecated in the installed keychain and warns if passed.
+    keychain_args: "--eval -Q --quiet git tunnel"
     has_greeting: true
     extra_paths:
       - "~/.cargo/bin"
