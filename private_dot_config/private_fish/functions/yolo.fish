@@ -1,3 +1,3 @@
-function yolo --description 'Happy Claude with --dangerously-skip-permissions'
-    happy --yolo $argv
+function yolo --description 'Claude Code with --dangerously-skip-permissions'
+    claude --dangerously-skip-permissions $argv
 end
