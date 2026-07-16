@@ -63,7 +63,16 @@ env = XCURSOR_SIZE,24
 env = QT_QPA_PLATFORMTHEME,qt5ct # change to qt6ct if you have that
 env = QT_QPA_PLATFORM,wayland
 env = MOZ_ENABLE_WAYLAND,1
+{{- if eq .chezmoi.hostname "framework-13" }}
+# Scoped to match .chezmoidata.yaml, which declares SUDO_ASKPASS under
+# framework-13 only -- domer's extra_env is empty and the helper was never
+# installed there, so setting it unconditionally only pointed sudo -A at a
+# path that does not exist.
+#
+# Literal path, not the '~' .chezmoidata.yaml uses: hyprland does not expand a
+# tilde in an env value, so sudo would receive it unexpanded.
 env = SUDO_ASKPASS,/home/gideon/.local/bin/sudo-askpass
+{{- end }}
 
 # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
 input {
