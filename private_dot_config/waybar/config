@@ -1,121 +1,181 @@
 {
-	"position": "top",
-	"exlusive": "true",
-	"passthrough": "true",
-	"gtk-layer-shell": "true",
-	"margin-top": 4,
-	"margin-left": 4,
-	"margin-right": 4,
-	"height": 16,
-	"modules-left": [
-		"hyprland/workspaces",
-		"custom/weather",
-		"cpu",
-		"memory",
-		"disk"
-	],
-	"modules-center": ["tray"],
-	"modules-right": ["hyprland/language", "pulseaudio", "clock", "separator"],
-	"tray": {
-		"icon-size": 16,
-		"icon-theme": "Papirus",
-		"spacing": 2
-	},
-	"custom/spacer": {
-		"format": " ", // Empty space
-		"tooltip": false
-	},
-	"separator": {
-		"format": " | "
-	},
-	"hyprland/window": {
-		"format": "{}",
-		"max-length": 35,
-		"rewrite": {
-			"": "Harsh"
-		},
-		"separate-outputs": true
-	},
-	"hyprland/workspaces": {
-		"format": "{icon}",
-		"on-click": "activate",
-		"format-icons": {
-			"1": "",
-			"2": "",
-			"3": "",
-			"4": "",
-			"5": "",
-			"6": "",
-			"7": "",
-			"8": "",
-			"9": "",
-			"active": "",
-			"urgent": "",
-			"persistent": "",
-			"focused": "",
-			"default": ""
-		},
-		"sort-by-number": true,
-		"persistent-workspaces": {
-			"*": 9,
-			"DP-1": 9
-		}
-	},
-	"clock": {
-		"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-		"format": "<span color='#89b4fa'>󰥔 </span><span color='#cdd6f4'>{:%H:%M | %a %d %b}</span>",
-		"format-alt": "{:%Y-%m-%d}"
-	},
-	"cpu": {
-		"format": "<span color='#89b4fa'>󰍛</span> <span color='#cdd6f4'>{usage}%</span>",
-		"interval": 1,
-		"format-alt-click": "click",
-		"format-alt": "<span color='#00FF00'>{icon0}{icon1}{icon2}{icon3}</span> <span color='#FFFFFF'>{usage:>2}%</span> <span color='#00FF00'>󰍛</span>",
-		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
-		"on-click": "gnome-system-monitor"
-	},
-	"memory": {
-		"interval": 3,
-		"format": "<span color='#f38ba8'> </span> <span color='#cdd6f4'>{used:0.1f}G</span>"
-	},
+    "layer": "top",
+    "position": "top",
+    "height": 34,
+    "margin-top": 0,
+    "margin-left": 0,
+    "margin-right": 0,
+    "spacing": 0,
 
-	"custom/weather": {
-		"exec": "~/.config/hypr/scripts/weather.sh",
-		"return-type": "json",
-		"interval": 600,
-		"format": "{text}"
-	},
+    "modules-left": [
+        "hyprland/workspaces",
+        "custom/weather",
+        "custom/clock",
+        "mpris"
+    ],
+    "modules-center": [
+        "tray"
+    ],
+    "modules-right": [
+        "custom/updates",
+        "pulseaudio",
+        "backlight",
+        "network",
+        "bluetooth",
+        "battery",
+        "memory",
+        "cpu",
+        "custom/notifications",
+        "custom/power"
+    ],
 
-	"pulseaudio": {
-		"format": "<span color='#a6e3a1'>{icon} </span><span color='#cdd6f4'>{volume}%</span>",
-		"format-bluetooth": "<span color='#a6e3a1'>{icon}</span>  <span color='#cdd6f4'>{volume}%</span>",
-		"tooltip": false,
-		"format-muted": "<span color='#f38ba8'>󰝟</span>",
-		"on-click": "wpctl set-mute @DEFAULT_SINK@ toggle",
-		"on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 10%+",
-		"on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 10%-",
-		"format-icons": {
-			"headphone": "",
-			"hands-free": "",
-			"headset": "",
-			"phone": "",
-			"portable": "",
-			"car": "",
-			"default": ["", "", ""]
-		}
-	},
-	"pulseaudio#microphone": {
-		"format": "{format_source}",
-		"format-source": "<span color='#f38ba8'> </span><span color='#cdd6f4'>{volume}%</span>",
-		"format-source-muted": "",
-		"on-click": "wpctl set-mute @DEFAULT_SOURCE@ toggle",
-		"on-scroll-up": "wpctl set-volume @DEFAULT_SOURCE@ 5%+",
-		"on-scroll-down": "wpctl set-volume @DEFAULT_SOURCE@ 5%-"
-	},
-	"disk": {
-		"interval": 3,
-		"path": "/home",
-		"format": "<span color='#a6e3a1'> </span><span color='#cdd6f4'>{free}</span>",
-		"unit": "GB"
-	}
+    "custom/launcher": {
+        "format": "",
+        "tooltip": false
+    },
+
+    "hyprland/workspaces": {
+        "format": "{id}",
+        "on-click": "activate",
+        "sort-by-number": true,
+        "persistent-workspaces": {
+            "*": 9
+        }
+    },
+
+    "custom/clock": {
+        "exec": "~/.config/waybar/scripts/clock.sh",
+        "return-type": "json",
+        "interval": 30,
+        "tooltip": true
+    },
+
+    "mpris": {
+        "format": "{player_icon} {dynamic}",
+        "format-paused": "{status_icon} {dynamic}",
+        "player-icons": {
+            "default": "▶"
+        },
+        "status-icons": {
+            "paused": "⏸"
+        },
+        "dynamic-order": ["title", "artist"],
+        "dynamic-separator": " - ",
+        "max-length": 30
+    },
+
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "icon-size": 18,
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close"
+    },
+
+    "tray": {
+        "icon-size": 18,
+        "spacing": 8
+    },
+
+    "custom/weather": {
+        "exec": "~/.config/hypr/scripts/weather.sh",
+        "return-type": "json",
+        "format": "{}",
+        "markup": true,
+        "interval": 600,
+        "tooltip": true
+    },
+
+    "custom/updates": {
+        "format": "󰏔 {}",
+        "exec": "checkupdates 2>/dev/null | wc -l",
+        "interval": 3600,
+        "on-click": "ghostty -e yay",
+        "tooltip": false
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume:3}%",
+        "format-bluetooth": " {volume:3}%",
+        "format-muted": "󰝟",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "wpctl set-mute @DEFAULT_SINK@ toggle",
+        "on-click-right": "pavucontrol",
+        "on-scroll-up": "wpctl set-volume @DEFAULT_SINK@ 5%+",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_SINK@ 5%-"
+    },
+
+    "backlight": {
+        "format": "{icon} {percent:3}%",
+        "format-icons": ["", "", "", "", "", "", "", "", ""],
+        "on-scroll-up": "brightnessctl set 5%+",
+        "on-scroll-down": "brightnessctl set 5%-",
+        "tooltip-format": "Brightness: {percent}%"
+    },
+
+    "network": {
+        "interval": 5,
+        "format-wifi": "{icon} {signalStrength:3}%",
+        "format-ethernet": "󰈀 {bandwidthUpBits}  {bandwidthDownBits}",
+        "format-disconnected": "󰤭 Disconnected",
+        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+        "tooltip-format-wifi": "  {essid}\n󰩟  {ipaddr}/{cidr}\n󱑽  {signalStrength}% ({signaldBm} dBm)\n  {bandwidthUpBits}\n  {bandwidthDownBits}\n󰾲  {frequency} GHz",
+        "tooltip-format-ethernet": "󰈀  {ifname}\n󰩟  {ipaddr}/{cidr}\n  {bandwidthUpBits}\n  {bandwidthDownBits}",
+        "tooltip-format-disconnected": "No connection",
+        "on-click": "nm-connection-editor",
+        "on-click-right": "nmcli device wifi rescan && notify-send 'WiFi' 'Scanning for networks...'"
+    },
+
+    "bluetooth": {
+        "format": " {status}",
+        "format-connected": " {device_alias}",
+        "format-disabled": "",
+        "on-click": "blueman-manager",
+        "tooltip-format": "{controller_alias}\t{controller_address}"
+    },
+
+    "battery": {
+        "interval": 10,
+        "states": {
+            "full": 100,
+            "good": 80,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity:3}% {time}",
+        "format-time": "({H}h {m}m)",
+        "format-charging": "󰂄 {capacity:3}% {time}",
+        "format-plugged": "󰂄 {capacity:3}%",
+        "format-full": "󰁹 Full",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip-format": "Battery: {capacity}%\nStatus: {status}\nPower draw: {power:.1f}W\nHealth: {health}%\nCycles: {cycles}\nTime remaining: {time}",
+        "on-click": "gnome-power-statistics 2>/dev/null || powerprofilesctl list"
+    },
+
+    "memory": {
+        "format": " {used:4.1f}G",
+        "interval": 3
+    },
+
+    "cpu": {
+        "format": "󰍛 {usage:3}%",
+        "interval": 1
+    },
+
+    "custom/notifications": {
+        "format": "󰂚",
+        "tooltip": false,
+        "on-click": "dunstctl set-paused toggle"
+    },
+
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": false,
+        "on-click": "~/.config/waybar/scripts/power-menu.sh"
+    }
 }

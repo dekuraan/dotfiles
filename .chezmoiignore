@@ -16,9 +16,15 @@ docs
 # btop.conf: version header churns on every btop upgrade
 # QtProject.conf: file-dialog history + treeViewHeader blob
 # pavucontrol.ini: window geometry and last-used tab
+# easyeffectsrc: usedPresets/mostUsedPresets counters and visiblePage rewrite on
+#   every launch; the sibling db/*rc plugin settings stay tracked
+# monitors.xml: mutter's display layout — per-machine by nature (panel size,
+#   scale, arrangement), so sharing it across hosts is actively wrong
 .config/btop/btop.conf
 .config/QtProject.conf
 .config/pavucontrol.ini
+.config/easyeffects/db/easyeffectsrc
+.config/monitors.xml
 
 # Palamedes has a heavily customized fish config with Tide, sourced helpers,
 # and server-specific aliases — skip overwriting it

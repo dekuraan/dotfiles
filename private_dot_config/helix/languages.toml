@@ -20,8 +20,28 @@ auto-format = true
 auto-format = true
 name = "c-sharp"
 formatter = { command = "csharpier" }
+language-servers = ["csharp-ls"]
 
-[language-server.omnisharp]
-command = "omnisharp"
-args = ["-lsp"]
-timeout = 10000
+[[language]]
+auto-format = true
+name = "rust"
+language-servers = [
+  "rust-analyzer",
+  # "helix-assist"
+]
+
+[[language]]
+auto-format = true
+name = "toml"
+formatter = { command = "tombi", args = ["fmt", "-"] }
+language-servers = [
+  "tombi",
+]
+
+[language-server.csharp-ls]
+command = "csharp-ls"
+
+# [language-server.helix-assist]
+# command = "helix-assist"
+# # Optional
+# args = ["--handler", "anthropic", "--num-suggestions", "1"]
