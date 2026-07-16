@@ -18,14 +18,37 @@ Hyprland wayland compositor configuration for a dual-monitor desktop setup using
 hyprland.conf          ← Main config (sources mocha.conf)
 mocha.conf             ← Catppuccin Mocha color palette (shared)
 hyprlock.conf          ← Lock screen config (sources mocha.conf)
-hyprpaper.conf         ← Wallpaper config
+hypridle.conf          ← Idle actions (auto-suspend is laptop-only)
+hyprsunset.conf        ← Blue-light filter; max-gamma only, sunsetr drives the rest
 scripts/
+  safe_killactive.sh   ← SUPER+Q window close
   start_record.sh      ← Screen recording (wf-recorder)
   stop_record.sh       ← Stop recording
   weather.sh           ← OpenWeatherMap widget for status bar
 ```
 
 `mocha.conf` is sourced by both `hyprland.conf` and `hyprlock.conf` to share color definitions.
+
+## Blue-light filter
+
+`exec-once = sunsetr` and nothing else. sunsetr reads coordinates from
+`~/.config/sunsetr/sunsetr.toml`, computes solar times, and **spawns hyprsunset
+itself** — it refuses to start if it finds an hyprsunset it did not launch, so
+never add `exec-once = hyprsunset` alongside it. wayle's bar module reads that
+same daemon over IPC.
+
+Gamma units differ by file and are a standing trap: `hyprsunset.conf` takes a
+multiplier (`1.0` == 100%), while wayle's module takes a percentage (0-200).
+
+## Wallpaper
+
+variety sources and rotates; **awww paints**. variety's `set_wallpaper` has a
+custom `hyprland` branch — upstream ships none, and without it the dispatch
+chain falls through to a feh/nitrogen fallback and silently paints nothing.
+Variety only auto-updates that script when it is unmodified, so the local
+customization is what protects it; any upstream hyprland support must be merged
+by hand. The awww daemon is started from that script, not from an `exec-once`,
+so it self-heals if it dies.
 
 ## Windowrule Syntax (v0.53+)
 

@@ -14,13 +14,15 @@ exec-once = xrdb -merge ~/.Xresources
 
 # One process per line: exec-once already backgrounds each, so chaining them
 # with '&' only hid which one died.
+#
+# No 'exec-once = awww-daemon' here on purpose: variety's set_wallpaper starts
+# the daemon itself, so it self-heals if it dies mid-session.
 exec-once = variety
 exec-once = wayle panel start
 exec-once = hypridle
-# Blue-light filter.
-{{- if or (eq .chezmoi.hostname "framework-13") (eq .chezmoi.hostname "domer") }}
-# sunsetr computes solar times from the coordinates in sunsetr.toml and drives
-# hyprsunset, which is what wayle's module reads and toggles.
+# Blue-light filter. sunsetr computes solar times from the coordinates in
+# sunsetr.toml and drives hyprsunset, which is what wayle's module reads and
+# toggles.
 #
 # Start sunsetr ONLY -- do not add 'exec-once = hyprsunset'. With
 # backend = "hyprsunset" sunsetr spawns and owns that process itself, and it
@@ -30,12 +32,10 @@ exec-once = hypridle
 # WantedBy/Requires graphical-session.target, which never activates in this
 # session (hyprland is started directly, not via uwsm), so enabling it would
 # be a silent no-op.
+#
+# Unconditional, with no gammastep fallback: the only hosts that read this file
+# are framework-13 and domer, and palamedes is headless.
 exec-once = sunsetr
-{{- else }}
-# gammastep elsewhere: sunsetr and hyprsunset aren't installed there. Falls
-# Church; there's no geoclue provider to infer the location from.
-exec-once = gammastep -l 38.8823:-77.1711
-{{- end }}
 
 source=~/.config/hypr/mocha.conf
 
