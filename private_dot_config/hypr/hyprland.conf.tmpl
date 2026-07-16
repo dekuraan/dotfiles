@@ -141,9 +141,8 @@ misc {
 }
 
 cursor {
-    # Replaces 'unclutter -idle 2'. unclutter is an X11 client (libx11/libxi),
-    # so under Hyprland it could never hide the Wayland cursor -- only the
-    # XWayland one. This is the native equivalent and covers both.
+    # Native cursor hiding. Don't reach for unclutter here: it's an X11 client
+    # and can't see the Wayland cursor.
     inactive_timeout = 2
 }
 
