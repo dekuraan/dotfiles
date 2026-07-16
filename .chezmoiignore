@@ -2,8 +2,28 @@
 .config/libinput-gestures.conf
 {{- end }}
 
+# Domer-only: units for daemons whose binaries/configs live on this box
+# (ccimgd, lnxlink, cursor agent), the USB-audio boot-race drop-ins for
+# pipewire/wireplumber, sunshine's Wayland env, and the shared cargo
+# target dir for wam worktrees.
+{{- if ne .chezmoi.hostname "domer" }}
+.config/systemd/user/ccimgd.service
+.config/systemd/user/cursor-agent-worker.service
+.config/systemd/user/lnxlink.service
+.config/systemd/user/pipewire.service.d
+.config/systemd/user/sunshine.service.d
+.config/systemd/user/wireplumber.service.d
+.config/fish/conf.d/wam-cargo-target.fish
+{{- end }}
+
+# .zshrc just sources the CachyOS defaults — only valid on the CachyOS boxes.
+{{- if not (list "domer" "framework-13" | has .chezmoi.hostname) }}
+.zshrc
+{{- end }}
+
 # Repo docs — travel with the source, never applied to $HOME.
 docs
+README.md
 
 # Regenerated every boot (SSH_AGENT_PID, SSH_AUTH_SOCK); never syncable.
 .config/fish/fish_variables
