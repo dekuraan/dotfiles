@@ -10,9 +10,12 @@ listener {
 }
 {{- if eq .chezmoi.hostname "framework-13" }}
 
-# Laptop only, and deliberately not shared: hyprland.conf starts hypridle on
-# every host, so without this guard a desktop would drop into suspend 30s
-# after locking, cutting off anything long-running and unattended.
+# Suspend is laptop-only: a desktop dropping into suspend 30s after locking
+# would cut off anything long-running and unattended.
+#
+# Redundant today -- hyprland.conf only starts hypridle on framework-13, so no
+# other host reads this file -- but kept as the guard that has to hold if a
+# second machine ever runs the daemon.
 listener {
     timeout = 330
     on-timeout = systemctl suspend-then-hibernate

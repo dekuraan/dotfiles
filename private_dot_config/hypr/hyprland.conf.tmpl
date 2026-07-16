@@ -19,7 +19,11 @@ exec-once = xrdb -merge ~/.Xresources
 # the daemon itself, so it self-heals if it dies mid-session.
 exec-once = variety
 exec-once = wayle panel start
+{{- if eq .chezmoi.hostname "framework-13" }}
+# Laptop only. domer is a desktop on mains: it has no battery to protect, and
+# an idle daemon there would only interrupt long-running unattended work.
 exec-once = hypridle
+{{- end }}
 # Blue-light filter. sunsetr computes solar times from the coordinates in
 # sunsetr.toml and drives hyprsunset, which is what wayle's module reads and
 # toggles.
