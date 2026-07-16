@@ -330,7 +330,7 @@ elif [ "$DE" == "hyprland" ]; then
                 sleep 0.1
             done
         fi
-        awww img "$WP" --transition-type any
+        awww img "$WP" --transition-type random
     fi
 
 elif [[ "$XDG_CURRENT_DESKTOP" == "COSMIC" ]]; then
