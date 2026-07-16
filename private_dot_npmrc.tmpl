@@ -1,0 +1,5 @@
+# Supply-chain posture: global CLIs install to a user prefix (no sudo, no
+# install scripts running as root), and nothing newer than a week old gets
+# pulled — most poisoned releases are yanked well within that window.
+prefix={{ .chezmoi.homeDir }}/.local
+min-release-age=7
