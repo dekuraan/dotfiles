@@ -52,7 +52,9 @@ $clipboard = rofi -modi "clipboard:greenclip print" -show clipboard -run-command
 $calc =  rofi -show calc -modi calc -no-show-match -no-sort
 $windowMenu = rofi -show window
 $browser = firefox
+{{- if eq .chezmoi.hostname "framework-13" }}
 $lock = hyprlock
+{{- end }}
 
 
 # Some default env vars.
@@ -199,7 +201,11 @@ bind = , Print, exec, grimblast copy area
 bind = CTRL, Print, exec, grimblast copy screen
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod SHIFT, J, layoutmsg, togglesplit # dwindle
+{{- if eq .chezmoi.hostname "framework-13" }}
+# Laptop only: domer deliberately has no lock, so hyprlock is not installed
+# there and this bind would be a key that silently does nothing.
 bind = $mainMod SHIFT, X, exec,$lock
+{{- end }}
 bind = CTRL, ESCAPE, exec, $terminal -e btop
 bind = $mainMod, Tab, cyclenext,
 bind = $mainMod, Tab, bringactivetotop,
