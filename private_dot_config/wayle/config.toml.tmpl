@@ -65,6 +65,9 @@ center = [
 ]
 right = [
   "weather",
+{{- if or (eq .chezmoi.hostname "framework-13") (eq .chezmoi.hostname "domer") }}
+  "hyprsunset",
+{{- end }}
   "volume",
   "network",
   "bluetooth",
@@ -141,6 +144,24 @@ label-color = "red"
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:weather"
+
+# Only rendered on the hosts that list it in bar.layout (framework-13, domer).
+# temperature matches the night profile in hypr/hyprsunset.conf so the toggle
+# and the schedule agree. Note the unit mismatch between the two files: gamma
+# here is a percentage (0-200), while hyprsunset.conf takes a multiplier where
+# 1.0 == 100%.
+[modules.hyprsunset]
+temperature = 4500
+gamma = 100
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "yellow"
+icon-on = "ld-moon-symbolic"
+icon-off = "ld-sun-symbolic"
+label-show = true
+label-color = "yellow"
+button-bg-color = "bg-surface-elevated"
+border-show = false
 
 [modules.volume]
 icon-show = true
