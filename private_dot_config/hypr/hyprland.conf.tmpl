@@ -19,16 +19,21 @@ exec-once = wayle panel start
 exec-once = hypridle
 # Blue-light filter.
 {{- if or (eq .chezmoi.hostname "framework-13") (eq .chezmoi.hostname "domer") }}
-# hyprsunset: Hyprland-native (hyprland-ctm-control-v1) and the only one wayle
-# has a module for, so the bar can show and toggle it. Schedule lives in
-# hyprsunset.conf and is fixed-time -- hyprsunset cannot compute solar times.
-# Run via exec-once, not the shipped hyprsunset.service: that unit is
+# sunsetr computes solar times from the coordinates in sunsetr.toml and drives
+# hyprsunset, which is what wayle's module reads and toggles.
+#
+# Start sunsetr ONLY -- do not add 'exec-once = hyprsunset'. With
+# backend = "hyprsunset" sunsetr spawns and owns that process itself, and it
+# refuses to start at all if it finds an hyprsunset it didn't launch.
+#
+# exec-once rather than the shipped sunsetr.service: that unit is
 # WantedBy/Requires graphical-session.target, which never activates in this
-# session, so enabling it would be a silent no-op.
-exec-once = hyprsunset
+# session (hyprland is started directly, not via uwsm), so enabling it would
+# be a silent no-op.
+exec-once = sunsetr
 {{- else }}
-# gammastep elsewhere: it derives sunrise/sunset from the coordinates, which
-# hyprsunset can't do. Falls Church; there's no geoclue provider to infer from.
+# gammastep elsewhere: sunsetr and hyprsunset aren't installed there. Falls
+# Church; there's no geoclue provider to infer the location from.
 exec-once = gammastep -l 38.8823:-77.1711
 {{- end }}
 

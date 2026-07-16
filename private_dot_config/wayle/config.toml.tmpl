@@ -146,13 +146,16 @@ border-show = false
 left-click = "dropdown:weather"
 
 # Only rendered on the hosts that list it in bar.layout (framework-13, domer).
-# temperature matches the night profile in hypr/hyprsunset.conf so the toggle
-# and the schedule agree. Note the unit mismatch between the two files: gamma
-# here is a percentage (0-200), while hyprsunset.conf takes a multiplier where
-# 1.0 == 100%.
+# The daemon this reads is spawned by sunsetr, not by hyprland -- see the
+# blue-light filter block in hypr/hyprland.conf.tmpl.
+#
+# temperature/gamma mirror sunsetr.toml's night_temp/night_gamma so the button
+# and the schedule agree. Clicking it overrides sunsetr until the next solar
+# transition re-asserts the computed value; that's the intended behaviour, not
+# a fight -- sunsetr in geo mode only writes at transition boundaries.
 [modules.hyprsunset]
-temperature = 4500
-gamma = 100
+temperature = 3300
+gamma = 90
 icon-show = true
 icon-color = "auto"
 icon-bg-color = "yellow"
