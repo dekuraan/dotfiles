@@ -1,0 +1,14 @@
+#!/bin/sh
+# Restart the wayle panel whenever the rendered wayle config changes. wayle
+# hot-reloads writes it notices, but its inotify watch has been observed dying
+# after repeated atomic renames (chezmoi replaces files via rename), leaving
+# the panel silently running a stale config.
+#
+# Runtime-guarded rather than gated on a machines.yaml flag (same reasoning as
+# reef in config.fish.tmpl): hosts without a running panel fall through the
+# status check, and the guard cannot fall out of sync with reality.
+#
+# rendered config hash: {{ includeTemplate "private_dot_config/wayle/config.toml.tmpl" . | sha256sum }}
+if wayle panel status >/dev/null 2>&1; then
+    wayle panel restart
+fi

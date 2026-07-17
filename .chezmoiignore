@@ -1,4 +1,7 @@
-{{- if ne .chezmoi.hostname "framework-13" }}
+{{- $m := index .machines .chezmoi.hostname }}
+
+# Touchpad gestures only make sense on laptop hardware.
+{{- if ne $m.role "laptop" }}
 .config/libinput-gestures.conf
 {{- end }}
 
@@ -17,7 +20,7 @@
 {{- end }}
 
 # .zshrc just sources the CachyOS defaults — only valid on the CachyOS boxes.
-{{- if not (list "domer" "framework-13" | has .chezmoi.hostname) }}
+{{- if not $m.is_cachyos }}
 .zshrc
 {{- end }}
 
@@ -47,11 +50,12 @@ README.md
 .config/monitors.xml
 
 # Palamedes has a heavily customized fish config with Tide, sourced helpers,
-# and server-specific aliases — skip overwriting it
-{{ if eq .chezmoi.hostname "palamedes" }}
+# and server-specific aliases — skip overwriting it (use_custom_config in
+# .chezmoidata/machines.yaml).
+{{- if $m.use_custom_config }}
 .config/fish/config.fish
 .config/fish/conf.d/
 .config/fish/functions/
 .config/fish/completions/
 .config/fish/themes/
-{{ end }}
+{{- end }}

@@ -11,12 +11,17 @@ Dotfiles for a fleet of four machines, managed with [chezmoi](https://chezmoi.io
 
 ## Layout
 
-- Per-machine facts live in `.chezmoidata.yaml` (`machines.<hostname>`:
-  role, keychain, PATH/env extras, shell aliases).
-- Host differences are handled two ways: templates keyed on
-  `.chezmoi.hostname` (`hyprland.conf.tmpl`, `config.fish.tmpl`,
-  `wayle/config.toml.tmpl`, …) and host-gated blocks in `.chezmoiignore`
-  for files that should only exist on some machines.
+- Per-machine facts live in `.chezmoidata/machines.yaml`
+  (`machines.<hostname>`: role, capability flags, keychain, PATH/env extras,
+  shell aliases).
+- Templates hoist `$m := index .machines .chezmoi.hostname` and branch on
+  `$m.role` or capability flags (`has_hyprsunset`, `is_cachyos`, …); raw
+  `.chezmoi.hostname` comparisons are reserved for genuinely host-tied things
+  (monitor lines, daemons that only exist on one box). `.chezmoiignore` uses
+  the same data for files that should only exist on some machines.
+- `.chezmoi.toml.tmpl` generates chezmoi's own config on `chezmoi init`.
+- `.chezmoiscripts/` holds `run_onchange` hooks (e.g. restart the wayle panel
+  when its rendered config changes).
 - `.chezmoiignore` also documents which app-managed files are deliberately
   *not* tracked, and why.
 - `docs/` holds repo notes and never applies to `$HOME`.

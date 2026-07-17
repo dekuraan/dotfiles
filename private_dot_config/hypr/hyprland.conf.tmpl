@@ -1,3 +1,7 @@
+{{- $m := index .machines .chezmoi.hostname -}}
+{{- /* Monitor lines, VRR, and tearing stay keyed on hostname: they describe
+       the specific panel wired to that box, not a role. Role/capability
+       checks below come from .chezmoidata/machines.yaml. */ -}}
 {{- if eq .chezmoi.hostname "framework-13" -}}
 monitor=eDP-1,2256x1504@60,0x0,1.6
 {{- else if eq .chezmoi.hostname "domer" -}}
@@ -19,9 +23,9 @@ exec-once = xrdb -merge ~/.Xresources
 # the daemon itself, so it self-heals if it dies mid-session.
 exec-once = variety
 exec-once = wayle panel start
-{{- if eq .chezmoi.hostname "framework-13" }}
-# Laptop only. domer is a desktop on mains: it has no battery to protect, and
-# an idle daemon there would only interrupt long-running unattended work.
+{{- if eq $m.role "laptop" }}
+# Laptop only. A desktop on mains has no battery to protect, and an idle
+# daemon there would only interrupt long-running unattended work.
 exec-once = hypridle
 {{- end }}
 # Blue-light filter. sunsetr computes solar times from the coordinates in
@@ -52,7 +56,7 @@ $clipboard = rofi -modi "clipboard:greenclip print" -show clipboard -run-command
 $calc =  rofi -show calc -modi calc -no-show-match -no-sort
 $windowMenu = rofi -show window
 $browser = firefox
-{{- if eq .chezmoi.hostname "framework-13" }}
+{{- if eq $m.role "laptop" }}
 $lock = hyprlock
 {{- end }}
 
@@ -63,15 +67,14 @@ env = XCURSOR_SIZE,24
 env = QT_QPA_PLATFORMTHEME,qt5ct # change to qt6ct if you have that
 env = QT_QPA_PLATFORM,wayland
 env = MOZ_ENABLE_WAYLAND,1
-{{- if eq .chezmoi.hostname "framework-13" }}
-# Scoped to match .chezmoidata.yaml, which declares SUDO_ASKPASS under
-# framework-13 only -- domer's extra_env is empty and the helper was never
-# installed there, so setting it unconditionally only pointed sudo -A at a
-# path that does not exist.
+{{- if hasKey $m.extra_env "SUDO_ASKPASS" }}
+# Gated on the machine actually declaring SUDO_ASKPASS in
+# .chezmoidata/machines.yaml, so this cannot drift from the shell env: a host
+# without the helper installed never points sudo -A at a missing path.
 #
-# Literal path, not the '~' .chezmoidata.yaml uses: hyprland does not expand a
+# Literal path, not the '~' machines.yaml uses: hyprland does not expand a
 # tilde in an env value, so sudo would receive it unexpanded.
-env = SUDO_ASKPASS,/home/gideon/.local/bin/sudo-askpass
+env = SUDO_ASKPASS,{{ .chezmoi.homeDir }}/.local/bin/sudo-askpass
 {{- end }}
 
 # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
@@ -84,7 +87,7 @@ input {
 
     follow_mouse = 1
 
-{{- if eq .chezmoi.hostname "framework-13" }}
+{{- if eq $m.role "laptop" }}
     touchpad {
         natural_scroll = yes
     }
@@ -210,9 +213,9 @@ bind = , Print, exec, grimblast copy area
 bind = CTRL, Print, exec, grimblast copy screen
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod SHIFT, J, layoutmsg, togglesplit # dwindle
-{{- if eq .chezmoi.hostname "framework-13" }}
-# Laptop only: domer deliberately has no lock, so hyprlock is not installed
-# there and this bind would be a key that silently does nothing.
+{{- if eq $m.role "laptop" }}
+# Laptop only: the desktops deliberately have no lock, so hyprlock is not
+# installed there and this bind would be a key that silently does nothing.
 bind = $mainMod SHIFT, X, exec,$lock
 {{- end }}
 bind = CTRL, ESCAPE, exec, $terminal -e btop
@@ -255,7 +258,7 @@ bind = , XF86AudioPause, exec, playerctl play-pause
 bind = , XF86AudioNext, exec, playerctl next
 bind = , XF86AudioPrev, exec, playerctl previous
 
-{{- if eq .chezmoi.hostname "framework-13" }}
+{{- if eq $m.role "laptop" }}
 
 # Screen brightness
 bind = , XF86MonBrightnessUp, exec, brightnessctl s +5%
@@ -332,6 +335,6 @@ bind = $mainMod, X, exec, $clipboard
 # calculator
 bind = $mainMod, C, exec, $calc
 
-{{- if eq .chezmoi.hostname "framework-13" }}
+{{- if eq $m.role "laptop" }}
 bindl=,switch:on:Lid Switch, exec, hyprlock & systemctl suspend-then-hibernate
 {{- end }}

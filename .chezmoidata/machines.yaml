@@ -1,6 +1,19 @@
+# Per-machine facts. Templates hoist `$m := index .machines .chezmoi.hostname`
+# and key on role/flags; prefer a role or capability flag here over a hostname
+# comparison in a template, and a runtime guard (see reef in config.fish.tmpl)
+# over a flag when the check can be made on the target machine itself.
+#
+# Every flag a template reads must be declared on EVERY machine: chezmoi
+# renders templates with missingkey=error, so an absent key aborts the whole
+# apply, it does not evaluate falsy.
 machines:
   framework-13:
     role: laptop
+    is_cachyos: true
+    # framework-13 and domer run the hyprland desktop with sunsetr driving
+    # hyprsunset; the other hosts have no blue-light stack at all.
+    has_hyprsunset: true
+    use_custom_config: false
     has_starship: true
     has_keychain: true
     # Purpose-named keys: git -> GitHub, tunnel -> tailnet. --agents is
@@ -16,6 +29,9 @@ machines:
       yay: paru
   domer:
     role: workstation
+    is_cachyos: true
+    has_hyprsunset: true
+    use_custom_config: false
     has_starship: true
     has_keychain: true
     # Purpose-named keys: git -> GitHub, tunnel -> tailnet. --agents is
@@ -28,6 +44,9 @@ machines:
       google-chrome: google-chrome-stable
   alienware:
     role: htpc
+    is_cachyos: false
+    has_hyprsunset: false
+    use_custom_config: false
     has_starship: false
     has_keychain: false
     keychain_args: ""
@@ -39,6 +58,8 @@ machines:
       hx: helix
   palamedes:
     role: server
+    is_cachyos: false
+    has_hyprsunset: false
     has_starship: false
     has_keychain: false
     keychain_args: ""

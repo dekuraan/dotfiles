@@ -1,3 +1,4 @@
+{{- $m := index .machines .chezmoi.hostname -}}
 # Wayle configuration — Catppuccin Mocha theme
 
 [general]
@@ -65,16 +66,16 @@ center = [
 ]
 right = [
   "weather",
-{{- if or (eq .chezmoi.hostname "framework-13") (eq .chezmoi.hostname "domer") }}
+{{- if $m.has_hyprsunset }}
   "hyprsunset",
 {{- end }}
-{{- if eq .chezmoi.hostname "framework-13" }}
+{{- if eq $m.role "laptop" }}
   "idle-inhibit",
 {{- end }}
   "volume",
   "network",
   "bluetooth",
-{{- if eq .chezmoi.hostname "framework-13" }}
+{{- if eq $m.role "laptop" }}
   "battery",
 {{- end }}
 {{- if eq .chezmoi.hostname "domer" }}
@@ -148,7 +149,7 @@ button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:weather"
 
-# Only rendered on the hosts that list it in bar.layout (framework-13, domer).
+# Only rendered on the hosts that list it in bar.layout (has_hyprsunset).
 # The daemon this reads is spawned by sunsetr, not by hyprland -- see the
 # blue-light filter block in hypr/hyprland.conf.tmpl.
 #
@@ -169,7 +170,7 @@ label-color = "accent"
 button-bg-color = "bg-surface-elevated"
 border-show = false
 
-{{- if eq .chezmoi.hostname "framework-13" }}
+{{- if eq $m.role "laptop" }}
 
 # Caffeine button: left-click holds the screen awake indefinitely,
 # right-click starts a timed (startup-duration) inhibit.
@@ -217,7 +218,7 @@ button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:bluetooth"
 
-{{- if eq .chezmoi.hostname "framework-13" }}
+{{- if eq $m.role "laptop" }}
 
 [modules.battery]
 icon-show = true

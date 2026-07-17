@@ -8,12 +8,12 @@ listener {
     timeout = 300
     on-timeout = loginctl lock-session
 }
-{{- if eq .chezmoi.hostname "framework-13" }}
+{{- if eq (index .machines .chezmoi.hostname).role "laptop" }}
 
 # Suspend is laptop-only: a desktop dropping into suspend 30s after locking
 # would cut off anything long-running and unattended.
 #
-# Redundant today -- hyprland.conf only starts hypridle on framework-13, so no
+# Redundant today -- hyprland.conf only starts hypridle on laptops, so no
 # other host reads this file -- but kept as the guard that has to hold if a
 # second machine ever runs the daemon.
 listener {
