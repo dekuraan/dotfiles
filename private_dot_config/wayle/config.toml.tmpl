@@ -68,6 +68,9 @@ right = [
 {{- if or (eq .chezmoi.hostname "framework-13") (eq .chezmoi.hostname "domer") }}
   "hyprsunset",
 {{- end }}
+{{- if eq .chezmoi.hostname "framework-13" }}
+  "idle-inhibit",
+{{- end }}
   "volume",
   "network",
   "bluetooth",
@@ -165,6 +168,25 @@ label-show = true
 label-color = "yellow"
 button-bg-color = "bg-surface-elevated"
 border-show = false
+
+{{- if eq .chezmoi.hostname "framework-13" }}
+
+# Caffeine button: left-click holds the screen awake indefinitely,
+# right-click starts a timed (startup-duration) inhibit.
+[modules.idle-inhibit]
+startup-duration = 60
+icon-inactive = "tb-coffee-off-symbolic"
+icon-active = "tb-coffee-symbolic"
+format = "{{ "{{" }} state {{ "}}" }}"
+icon-show = true
+icon-color = "auto"
+icon-bg-color = "#fab387"  # Peach ("peach" is not a valid wayle CSS token)
+label-show = false
+button-bg-color = "bg-surface-elevated"
+border-show = false
+left-click = "wayle idle toggle --indefinite"
+right-click = "wayle idle toggle"
+{{- end }}
 
 [modules.volume]
 icon-show = true
