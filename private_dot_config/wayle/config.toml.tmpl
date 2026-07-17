@@ -141,9 +141,9 @@ format = "{{ "{{" }} temp {{ "}}" }}{{ "{{" }} temp_unit {{ "}}" }}"
 refresh-interval-seconds = 1800
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "red"
+icon-bg-color = "accent"
 label-show = true
-label-color = "red"
+label-color = "accent"
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:weather"
@@ -161,11 +161,11 @@ temperature = 3300
 gamma = 90
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "yellow"
+icon-bg-color = "accent"
 icon-on = "ld-moon-symbolic"
 icon-off = "ld-sun-symbolic"
 label-show = true
-label-color = "yellow"
+label-color = "accent"
 button-bg-color = "bg-surface-elevated"
 border-show = false
 
@@ -180,7 +180,7 @@ icon-active = "tb-coffee-symbolic"
 format = "{{ "{{" }} state {{ "}}" }}"
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "#fab387"  # Peach ("peach" is not a valid wayle CSS token)
+icon-bg-color = "accent"
 label-show = false
 button-bg-color = "bg-surface-elevated"
 border-show = false
@@ -191,9 +191,9 @@ right-click = "wayle idle toggle"
 [modules.volume]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "peach"
+icon-bg-color = "accent"
 label-show = true
-label-color = "peach"
+label-color = "accent"
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:audio"
@@ -202,12 +202,8 @@ middle-click = "wayle audio output-mute"
 [modules.network]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "yellow"
-label-show = true
-label-color = "yellow"
-{{- if ne .chezmoi.hostname "domer" }}
-label-max-length = 4
-{{- end }}
+icon-bg-color = "accent"
+label-show = false
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:network"
@@ -215,12 +211,8 @@ left-click = "dropdown:network"
 [modules.bluetooth]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "green"
-label-show = true
-label-color = "green"
-{{- if ne .chezmoi.hostname "domer" }}
-label-max-length = 4
-{{- end }}
+icon-bg-color = "accent"
+label-show = false
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:bluetooth"
@@ -230,40 +222,80 @@ left-click = "dropdown:bluetooth"
 [modules.battery]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "teal"
+icon-bg-color = "accent"
 label-show = true
-label-color = "teal"
+label-color = "accent"
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:battery"
+
+# Last matching entry wins: yellow at medium charge, red when low.
+[[modules.battery.thresholds]]
+below = 50
+icon-bg-color = "yellow"
+label-color = "yellow"
+
+[[modules.battery.thresholds]]
+below = 20
+icon-bg-color = "red"
+label-color = "red"
 {{- end }}
 
 [modules.ram]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "{{ if eq .chezmoi.hostname "framework-13" }}blue{{ else }}teal{{ end }}"
+icon-bg-color = "accent"
 label-show = true
-label-color = "{{ if eq .chezmoi.hostname "framework-13" }}blue{{ else }}teal{{ end }}"
+label-color = "accent"
 button-bg-color = "bg-surface-elevated"
 border-show = false
+
+[[modules.ram.thresholds]]
+above = 70
+icon-bg-color = "yellow"
+label-color = "yellow"
+
+[[modules.ram.thresholds]]
+above = 90
+icon-bg-color = "red"
+label-color = "red"
 
 [modules.cpu]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "{{ if eq .chezmoi.hostname "framework-13" }}primary{{ else }}blue{{ end }}"
+icon-bg-color = "accent"
 label-show = true
-label-color = "{{ if eq .chezmoi.hostname "framework-13" }}primary{{ else }}blue{{ end }}"
+label-color = "accent"
 button-bg-color = "bg-surface-elevated"
 border-show = false
+
+[[modules.cpu.thresholds]]
+above = 70
+icon-bg-color = "yellow"
+label-color = "yellow"
+
+[[modules.cpu.thresholds]]
+above = 90
+icon-bg-color = "red"
+label-color = "red"
 
 [modules.notifications]
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "primary"
+icon-bg-color = "accent"
 label-show = false
 button-bg-color = "bg-surface-elevated"
 border-show = false
 left-click = "dropdown:notification"
+
+# Color up as unread notifications pile up.
+[[modules.notifications.thresholds]]
+above = 5
+icon-bg-color = "yellow"
+
+[[modules.notifications.thresholds]]
+above = 20
+icon-bg-color = "red"
 {{- if eq .chezmoi.hostname "domer" }}
 
 # ── G-Wolves Lycan 8K mouse battery ──────────────────────
@@ -281,9 +313,9 @@ tooltip-format = "{{ "{{" }} tooltip {{ "}}" }}"
 class-format = "mouse-battery {{ "{{" }} alt {{ "}}" }}"
 icon-show = true
 icon-color = "auto"
-icon-bg-color = "green"
+icon-bg-color = "accent"
 label-show = true
-label-color = "green"
+label-color = "accent"
 button-bg-color = "bg-surface-elevated"
 border-show = false
 {{- end }}
