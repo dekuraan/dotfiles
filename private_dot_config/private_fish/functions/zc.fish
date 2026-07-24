@@ -46,9 +46,20 @@ function zc --description 'Launch `claude --worktree <name>` in a minimal zellij
     # lazygit/fish tabs wait until `claude --worktree` has created the directory.
     set -l wait_cmd "while not test -d '$wt_dir'; sleep 0.3; end; cd '$wt_dir';"
 
+    # zellij runs the `claude` *binary*, not the fish function, so the function's
+    # Remote Control injection doesn't apply here — add it unless the caller
+    # already passed a remote-control/print flag.
     set -l claude_args "\"--worktree\" \"$name\""
+    set -l inject_rc 1
     for a in $extra
+        switch $a
+            case -p --print --remote-control '--remote-control=*'
+                set inject_rc 0
+        end
         set claude_args "$claude_args \"$a\""
+    end
+    if test $inject_rc -eq 1
+        set claude_args "$claude_args \"--remote-control\""
     end
 
     set -l layout (mktemp -t zc.XXXXXX.kdl)
